@@ -6,4 +6,8 @@ export const theme = {
   fonts: {
     secondary: "'Averia Sans Libre', cursive",
   },
+
+  breakpoints: {
+    tablet: "768px",
+  },
 };

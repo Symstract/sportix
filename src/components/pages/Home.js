@@ -4,14 +4,34 @@ import styled from "styled-components";
 
 import heroImage from "../../images/soccer-with-question-marks.svg";
 
+const desktopWidth = "1200px";
+
+const StyledHeroImage = styled.img`
+  flex-shrink: 0;
+  height: 295px;
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    height: 390px;
+  }
+
+  @media screen and (min-width: ${desktopWidth}) {
+    width: 353px;
+    height: 600px;
+  }
+`;
+
 function HeroImage() {
-  return <img src={heroImage} alt="" height="295px"></img>;
+  return <StyledHeroImage src={heroImage} alt=""></StyledHeroImage>;
 }
 
 const StyledQuestion = styled.p`
   font-family: ${({ theme }) => theme.fonts.secondary};
   font-size: 1.25rem;
   color: ${({ theme }) => theme.colors.primary};
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 1.75rem;
+  }
 `;
 
 function Question() {
@@ -26,6 +46,10 @@ const StyledHeading = styled.h1`
 
   & > span {
     color: #99e23c;
+  }
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 2rem;
   }
 `;
 
@@ -63,6 +87,16 @@ const StyledTextContent = styled.div`
   align-items: center;
   gap: 1.9rem;
   margin-top: 1.9rem;
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+  }
+
+  @media screen and (min-width: ${desktopWidth}) {
+    gap: 4.4rem;
+    margin-top: 0;
+  }
 `;
 
 function TextContent() {
@@ -80,6 +114,11 @@ const StyledMainContent = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 2.5rem;
+
+  @media screen and (min-width: ${desktopWidth}) {
+    flex-direction: row;
+    margin-top: 5rem;
+  }
 `;
 
 function MainContent() {

@@ -10,6 +10,10 @@ const StyledLogo = styled(Link)`
   font-family: "Luckiest Guy", cursive;
   font-size: 1.125rem;
   text-decoration: none;
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 2rem;
+  }
 `;
 
 function Logo() {
@@ -21,6 +25,10 @@ const StyledHeader = styled.header`
   align-items: center;
   width: 100%;
   height: 40px;
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    height: 72px;
+  }
 `;
 
 export function Header(props) {
