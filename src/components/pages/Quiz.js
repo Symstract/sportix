@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components/macro";
+
+import { questions } from "../../questions";
 
 const StyledQuestionContainer = styled.div`
   display: flex;
@@ -39,15 +41,17 @@ function Question(props) {
   return <StyledQuestion>{props.children}</StyledQuestion>;
 }
 
-const StyledOptionsContainer = styled.div`
+const StyledOptionList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
   width: 100%;
+  padding: 0;
+  list-style: none;
 `;
 
-function OptionsContainer(props) {
-  return <StyledOptionsContainer>{props.children}</StyledOptionsContainer>;
+function OptionList(props) {
+  return <StyledOptionList>{props.children}</StyledOptionList>;
 }
 
 const StyledOption = styled.button`
@@ -68,20 +72,15 @@ const StyledOption = styled.button`
     background: ${({ theme }) => theme.colors.primary};
     color: black;
   }
+
+  &[aria-disabled="true"] {
+    filter: brightness(75%);
+    cursor: default;
+  }
 `;
 
 function Option(props) {
-  return (
-    <StyledOption
-      aria-pressed="false"
-      onClick={(e) => {
-        e.target.ariaPressed =
-          e.target.ariaPressed === "true" ? "false" : "true";
-      }}
-    >
-      {props.children}
-    </StyledOption>
-  );
+  return <StyledOption {...props}>{props.children}</StyledOption>;
 }
 
 const StyledMainContent = styled.div`
@@ -93,21 +92,61 @@ const StyledMainContent = styled.div`
 `;
 
 function MainContent() {
+  const [questionNumber, setQuestionNumber] = useState(4);
+  const [answers, setAnswers] = useState(
+    [...Array(questions.length)].map(() => [])
+  );
+
+  const questionIndex = questionNumber - 1;
+  const curAns = answers[questionIndex];
+  const expectedAnsCount = questions[questionIndex].answer.length;
+
+  const isSelected = (index) =>
+    answers[questionNumber - 1].includes(index) ? "true" : "false";
+
+  const isDisabled = (index) => {
+    if (expectedAnsCount !== 1 && expectedAnsCount === curAns.length) {
+      if (!answers[questionNumber - 1].includes(index)) {
+        return "true";
+      }
+    }
+
+    return "false";
+  };
+
+  const handleClick = (index) => {
+    const answersCopy = [...answers];
+
+    if (curAns.includes(index)) {
+      answersCopy[questionIndex] = curAns.filter((i) => i !== index);
+    } else if (expectedAnsCount === 1) {
+      answersCopy[questionIndex] = [index];
+    } else if (expectedAnsCount !== curAns.length) {
+      answersCopy[questionIndex].push(index);
+    }
+
+    setAnswers(answersCopy);
+  };
+
   return (
     <StyledMainContent>
       <QuestionContainer>
-        <QuestionNumber>13.</QuestionNumber>
-        <Question>
-          Question comes here sdfsdf sdfsdf sdsfdsdfsdf sdfsdfsdffsd fsdfsdffsdf
-          sdfsdfsdfs
-        </Question>
+        <QuestionNumber>{questionNumber}.</QuestionNumber>
+        <Question>{questions[questionNumber - 1].question}</Question>
       </QuestionContainer>
-      <OptionsContainer>
-        <Option>Test option</Option>
-        <Option>Test option</Option>
-        <Option>Test option</Option>
-        <Option>Test option</Option>
-      </OptionsContainer>
+      <OptionList>
+        {questions[questionNumber - 1].options.map((option, index) => (
+          <li key={index}>
+            <Option
+              aria-pressed={isSelected(index)}
+              aria-disabled={isDisabled(index)}
+              onClick={() => handleClick(index)}
+            >
+              {option}
+            </Option>
+          </li>
+        ))}
+      </OptionList>
     </StyledMainContent>
   );
 }
