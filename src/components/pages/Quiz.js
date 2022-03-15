@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components/macro";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 import { questions } from "../../questions";
+
+const bottomNavHeight = "66px";
+
+// Main content
+// =============================================================================
 
 const StyledQuestionContainer = styled.div`
   display: flex;
@@ -89,14 +96,10 @@ const StyledMainContent = styled.div`
   width: 100%;
   max-width: 800px;
   margin-top: 2.5rem;
+  padding-bottom: calc(${bottomNavHeight} + 30px);
 `;
 
-function MainContent() {
-  const [questionNumber, setQuestionNumber] = useState(4);
-  const [answers, setAnswers] = useState(
-    [...Array(questions.length)].map(() => [])
-  );
-
+function MainContent({ questionNumber, answers, setAnswers }) {
   const questionIndex = questionNumber - 1;
   const curAns = answers[questionIndex];
   const expectedAnsCount = questions[questionIndex].answer.length;
@@ -151,6 +154,132 @@ function MainContent() {
   );
 }
 
+// Bottom nav
+// =============================================================================
+
+const StyledProgressBar = styled.div`
+  width: 100%;
+  height: 6px;
+  background-image: linear-gradient(
+    to right,
+    ${({ theme }) => theme.colors.primary},
+    ${({ theme }) => theme.colors.primary}
+      ${({ percentage }) => `${percentage}%`},
+    #818181 ${({ percentage }) => `${percentage}%`}
+  );
+`;
+
+function ProgressBar(props) {
+  return <StyledProgressBar {...props}></StyledProgressBar>;
+}
+
+const StyledNavButton = styled.button`
+  visibility: ${({ hide }) => (hide ? "hidden" : "initial")};
+  width: 3.75rem;
+  height: 100%;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+
+  &[aria-disabled="false"]:hover {
+    cursor: pointer;
+  }
+
+  &[aria-disabled="true"] {
+    filter: brightness(75%);
+  }
+`;
+
+function NavButton(props) {
+  return <StyledNavButton {...props}>{props.children}</StyledNavButton>;
+}
+
+const StyledNavIcon = styled(FontAwesomeIcon)`
+  ${StyledNavButton}[aria-disabled=false]:hover &,
+  ${StyledNavButton}[aria-disabled=false]:focus & {
+    transform: scale(120%);
+  }
+`;
+
+function NavIcon(props) {
+  return (
+    <StyledNavIcon
+      icon={props.direction === "next" ? faAngleRight : faAngleLeft}
+    />
+  );
+}
+
+const StyledNavControls = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 1.25rem;
+
+  span {
+    display: block;
+    width: 6rem;
+    text-align: center;
+  }
+`;
+
+function NavControls({ questionNumber, setQuestionNumber, canMoveToNext }) {
+  const next = () => {
+    if (!canMoveToNext) return;
+    setQuestionNumber(Math.min(questionNumber + 1, questions.length));
+  };
+
+  const prev = () => setQuestionNumber(Math.max(questionNumber - 1, 1));
+
+  return (
+    <StyledNavControls>
+      <NavButton
+        onClick={prev}
+        hide={questionNumber === 1}
+        aria-disabled={false}
+      >
+        <NavIcon direction="previous" />
+      </NavButton>
+      <span>
+        {questionNumber}/{questions.length}
+      </span>
+      <NavButton
+        onClick={next}
+        hide={questionNumber === questions.length}
+        aria-disabled={!canMoveToNext}
+      >
+        <NavIcon direction="next" />
+      </NavButton>
+    </StyledNavControls>
+  );
+}
+
+const StyledBottomNav = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  height: ${bottomNavHeight};
+  background: #282525;
+`;
+
+function BottomNav({ questionNumber, setQuestionNumber, canMoveToNext }) {
+  return (
+    <StyledBottomNav>
+      <ProgressBar percentage={(questionNumber / questions.length) * 100} />
+      <NavControls
+        questionNumber={questionNumber}
+        setQuestionNumber={setQuestionNumber}
+        canMoveToNext={canMoveToNext}
+      />
+    </StyledBottomNav>
+  );
+}
+
+// Main and page
+// =============================================================================
+
 const StyledMain = styled.main`
   display: flex;
   flex-direction: column;
@@ -158,18 +287,32 @@ const StyledMain = styled.main`
   width: 100%;
 `;
 
-function Main() {
-  return (
-    <StyledMain>
-      <MainContent />
-    </StyledMain>
-  );
+function Main(props) {
+  return <StyledMain>{props.children}</StyledMain>;
 }
 
 export function Quiz() {
+  const [questionNumber, setQuestionNumber] = useState(1);
+  const [answers, setAnswers] = useState(
+    [...Array(questions.length)].map(() => [])
+  );
+
+  const canMoveToNext =
+    answers[questionNumber - 1].length ===
+    questions[questionNumber - 1].answer.length;
+
   return (
     <Main>
-      <MainContent />
+      <MainContent
+        questionNumber={questionNumber}
+        answers={answers}
+        setAnswers={setAnswers}
+      />
+      <BottomNav
+        questionNumber={questionNumber}
+        setQuestionNumber={setQuestionNumber}
+        canMoveToNext={canMoveToNext}
+      />
     </Main>
   );
 }
