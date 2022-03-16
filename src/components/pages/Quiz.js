@@ -243,7 +243,7 @@ const StyledFinishButton = styled(Link)`
   }
 `;
 
-function FinishButton({ props }) {
+function FinishButton(props) {
   return (
     <StyledFinishButton
       to="/result"
