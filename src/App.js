@@ -7,6 +7,7 @@ import { Header } from "./components/Header";
 import { PageContainer } from "./components/PageContainer";
 import { Home } from "./components/pages/Home";
 import { Quiz } from "./components/pages/Quiz";
+import { Result } from "./components/pages/Result";
 
 import { theme } from "./theme";
 
@@ -21,6 +22,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/quiz" element={<Quiz />} />
+            <Route path="/result" element={<Result />} />
           </Routes>
         </BrowserRouter>
       </PageContainer>

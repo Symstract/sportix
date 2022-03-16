@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components/macro";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
@@ -6,6 +7,7 @@ import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { questions } from "../../questions";
 
 const bottomNavHeight = "66px";
+const contentMaxWidth = "800px";
 
 // Main content
 // =============================================================================
@@ -94,7 +96,7 @@ const StyledMainContent = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 800px;
+  max-width: ${contentMaxWidth};
   margin-top: 2.5rem;
   padding-bottom: calc(${bottomNavHeight} + 30px);
 `;
@@ -158,6 +160,8 @@ function MainContent({ questionNumber, answers, setAnswers }) {
 // =============================================================================
 
 const StyledProgressBar = styled.div`
+  flex-shrink: 0;
+  flex-grow: 0;
   width: 100%;
   height: 6px;
   background-image: linear-gradient(
@@ -209,10 +213,55 @@ function NavIcon(props) {
   );
 }
 
+const StyledQuestionNav = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+`;
+
+function QuestionNav(props) {
+  return <StyledQuestionNav>{props.children}</StyledQuestionNav>;
+}
+
+const StyledFinishButton = styled(Link)`
+  position: absolute;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.primary};
+  color: black;
+  font-size: 1.25rem;
+  text-decoration: none;
+
+  &[aria-disabled="true"] {
+    cursor: default;
+    filter: brightness(75%);
+  }
+`;
+
+function FinishButton({ props }) {
+  return (
+    <StyledFinishButton
+      to="/result"
+      state={{ answers: props.answers }}
+      className={props["aria-disabled"] ? "" : "highlightable"}
+      {...props}
+    >
+      Finish
+    </StyledFinishButton>
+  );
+}
+
 const StyledNavControls = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: ${({ theme }) => theme.pageWidth};
+  max-width: ${contentMaxWidth};
   height: 100%;
   font-size: 1.25rem;
 
@@ -223,7 +272,12 @@ const StyledNavControls = styled.div`
   }
 `;
 
-function NavControls({ questionNumber, setQuestionNumber, canMoveToNext }) {
+function NavControls({
+  questionNumber,
+  setQuestionNumber,
+  canMoveToNext,
+  answers,
+}) {
   const next = () => {
     if (!canMoveToNext) return;
     setQuestionNumber(Math.min(questionNumber + 1, questions.length));
@@ -231,25 +285,38 @@ function NavControls({ questionNumber, setQuestionNumber, canMoveToNext }) {
 
   const prev = () => setQuestionNumber(Math.max(questionNumber - 1, 1));
 
+  const finish = (e) => {
+    if (!canMoveToNext) e.preventDefault();
+  };
+
   return (
     <StyledNavControls>
-      <NavButton
-        onClick={prev}
-        hide={questionNumber === 1}
-        aria-disabled={false}
-      >
-        <NavIcon direction="previous" />
-      </NavButton>
-      <span>
-        {questionNumber}/{questions.length}
-      </span>
-      <NavButton
-        onClick={next}
-        hide={questionNumber === questions.length}
-        aria-disabled={!canMoveToNext}
-      >
-        <NavIcon direction="next" />
-      </NavButton>
+      <QuestionNav>
+        <NavButton
+          onClick={prev}
+          hide={questionNumber === 1}
+          aria-disabled={false}
+        >
+          <NavIcon direction="previous" />
+        </NavButton>
+        <span>
+          {questionNumber}/{questions.length}
+        </span>
+        <NavButton
+          onClick={next}
+          hide={questionNumber === questions.length}
+          aria-disabled={!canMoveToNext}
+        >
+          <NavIcon direction="next" />
+        </NavButton>
+      </QuestionNav>
+      {questionNumber === questions.length && (
+        <FinishButton
+          aria-disabled={!canMoveToNext}
+          onClick={(e) => finish(e)}
+          answers={answers}
+        />
+      )}
     </StyledNavControls>
   );
 }
@@ -257,6 +324,7 @@ function NavControls({ questionNumber, setQuestionNumber, canMoveToNext }) {
 const StyledBottomNav = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   position: fixed;
   bottom: 0;
   width: 100vw;
@@ -264,7 +332,12 @@ const StyledBottomNav = styled.div`
   background: #282525;
 `;
 
-function BottomNav({ questionNumber, setQuestionNumber, canMoveToNext }) {
+function BottomNav({
+  questionNumber,
+  setQuestionNumber,
+  canMoveToNext,
+  answers,
+}) {
   return (
     <StyledBottomNav>
       <ProgressBar percentage={(questionNumber / questions.length) * 100} />
@@ -272,6 +345,7 @@ function BottomNav({ questionNumber, setQuestionNumber, canMoveToNext }) {
         questionNumber={questionNumber}
         setQuestionNumber={setQuestionNumber}
         canMoveToNext={canMoveToNext}
+        answers={answers}
       />
     </StyledBottomNav>
   );
@@ -312,6 +386,7 @@ export function Quiz() {
         questionNumber={questionNumber}
         setQuestionNumber={setQuestionNumber}
         canMoveToNext={canMoveToNext}
+        answers={answers}
       />
     </Main>
   );

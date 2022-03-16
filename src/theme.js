@@ -10,4 +10,6 @@ export const theme = {
   breakpoints: {
     tablet: "768px",
   },
+
+  pageWidth: "90%",
 };

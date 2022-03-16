@@ -5,7 +5,7 @@ const StyledPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90%;
+  width: ${({ theme }) => theme.pageWidth};
   max-width: 1100px;
   margin: 0 auto;
 `;
