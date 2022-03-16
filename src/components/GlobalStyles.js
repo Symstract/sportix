@@ -9,7 +9,8 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    height: 100vh;
+    position: relative;
+    min-height: 100vh;
     background: linear-gradient(#292525, #232020);
   }
 

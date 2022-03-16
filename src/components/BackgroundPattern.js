@@ -9,8 +9,8 @@ const StyledBackgroundPattern = styled.div`
   left: 0;
   z-index: -9999;
   display: block;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   opacity: 0.03;
   background-image: url(${pattern});
   background-size: 220px;
