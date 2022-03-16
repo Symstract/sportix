@@ -112,11 +112,11 @@ function MainContent({ questionNumber, answers, setAnswers }) {
   const isDisabled = (index) => {
     if (expectedAnsCount !== 1 && expectedAnsCount === curAns.length) {
       if (!answers[questionNumber - 1].includes(index)) {
-        return "true";
+        return true;
       }
     }
 
-    return "false";
+    return false;
   };
 
   const handleClick = (index) => {
@@ -143,6 +143,7 @@ function MainContent({ questionNumber, answers, setAnswers }) {
         {questions[questionNumber - 1].options.map((option, index) => (
           <li key={index}>
             <Option
+              className={isDisabled(index) ? "" : "highlightable"}
               aria-pressed={isSelected(index)}
               aria-disabled={isDisabled(index)}
               onClick={() => handleClick(index)}
