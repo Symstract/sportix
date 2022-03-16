@@ -18,7 +18,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   .highlightable {
-    &:hover, &:focus {
+    &:hover {
     filter: saturate(70%);
     filter: brightness(110%);
     }
