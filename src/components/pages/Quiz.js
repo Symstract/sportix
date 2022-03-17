@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components/macro";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -146,7 +146,8 @@ function MainContent({ questionNumber, answers, setAnswers }) {
               className={isDisabled(index) ? "" : "highlightable"}
               aria-pressed={isSelected(index)}
               aria-disabled={isDisabled(index)}
-              onClick={() => handleClick(index)}
+              onClick={(e) => handleClick(index)}
+              onPointerDown={(e) => e.preventDefault()}
             >
               {option}
             </Option>
@@ -275,17 +276,11 @@ const StyledNavControls = styled.div`
 
 function NavControls({
   questionNumber,
-  setQuestionNumber,
   canMoveToNext,
   answers,
+  moveToPrevious,
+  moveToNext,
 }) {
-  const next = () => {
-    if (!canMoveToNext) return;
-    setQuestionNumber(Math.min(questionNumber + 1, questions.length));
-  };
-
-  const prev = () => setQuestionNumber(Math.max(questionNumber - 1, 1));
-
   const finish = (e) => {
     if (!canMoveToNext) e.preventDefault();
   };
@@ -294,7 +289,7 @@ function NavControls({
     <StyledNavControls>
       <QuestionNav>
         <NavButton
-          onClick={prev}
+          onClick={moveToPrevious}
           hide={questionNumber === 1}
           aria-disabled={false}
         >
@@ -304,7 +299,7 @@ function NavControls({
           {questionNumber}/{questions.length}
         </span>
         <NavButton
-          onClick={next}
+          onClick={moveToNext}
           hide={questionNumber === questions.length}
           aria-disabled={!canMoveToNext}
         >
@@ -335,18 +330,20 @@ const StyledBottomNav = styled.div`
 
 function BottomNav({
   questionNumber,
-  setQuestionNumber,
   canMoveToNext,
   answers,
+  moveToPrevious,
+  moveToNext,
 }) {
   return (
     <StyledBottomNav>
       <ProgressBar percentage={(questionNumber / questions.length) * 100} />
       <NavControls
         questionNumber={questionNumber}
-        setQuestionNumber={setQuestionNumber}
         canMoveToNext={canMoveToNext}
         answers={answers}
+        moveToPrevious={moveToPrevious}
+        moveToNext={moveToNext}
       />
     </StyledBottomNav>
   );
@@ -376,6 +373,26 @@ export function Quiz() {
     answers[questionNumber - 1].length ===
     questions[questionNumber - 1].answer.length;
 
+  const next = () => {
+    if (canMoveToNext) {
+      setQuestionNumber(Math.min(questionNumber + 1, questions.length));
+    }
+  };
+
+  const prev = () => {
+    setQuestionNumber(Math.max(questionNumber - 1, 1));
+  };
+
+  const handleKeyUp = (e) => {
+    if (e.key === "ArrowLeft") prev(true);
+    if (e.key === "ArrowRight") next(true);
+  };
+
+  useEffect(() => {
+    document.addEventListener("keyup", handleKeyUp);
+    return () => document.removeEventListener("keyup", handleKeyUp);
+  });
+
   return (
     <Main>
       <MainContent
@@ -385,9 +402,10 @@ export function Quiz() {
       />
       <BottomNav
         questionNumber={questionNumber}
-        setQuestionNumber={setQuestionNumber}
         canMoveToNext={canMoveToNext}
         answers={answers}
+        moveToNext={next}
+        moveToPrevious={prev}
       />
     </Main>
   );
