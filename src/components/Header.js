@@ -34,7 +34,7 @@ const StyledHeader = styled.header`
 export function Header(props) {
   return (
     <StyledHeader>
-      <Logo></Logo>
+      <Logo />
     </StyledHeader>
   );
 }
