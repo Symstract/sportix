@@ -8,7 +8,7 @@ const StyledLogo = styled(Link)`
   height: 100%;
   color: ${({ theme }) => theme.colors.primary};
   font-family: "Luckiest Guy", cursive;
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   text-decoration: none;
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -24,7 +24,7 @@ const StyledHeader = styled.header`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 40px;
+  height: 50px;
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     height: 72px;
