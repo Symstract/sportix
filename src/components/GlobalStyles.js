@@ -24,4 +24,10 @@ export const GlobalStyles = createGlobalStyle`
     filter: brightness(110%);
     }
   }
+
+  .darkens-on-active-state {
+    &:active {
+      filter: brightness(80%);
+    }
+  }
 `;

@@ -75,7 +75,7 @@ const StyledButton = styled(Link)`
 
 function Button() {
   return (
-    <StyledButton to="/quiz" className="highlightable">
+    <StyledButton to="/quiz" className="highlightable darkens-on-active-state">
       Let's Go!
     </StyledButton>
   );

@@ -197,7 +197,11 @@ const StyledNavButton = styled.button`
 `;
 
 function NavButton(props) {
-  return <StyledNavButton {...props}>{props.children}</StyledNavButton>;
+  return (
+    <StyledNavButton className="darkens-on-active-state" {...props}>
+      {props.children}
+    </StyledNavButton>
+  );
 }
 
 const StyledNavIcon = styled(FontAwesomeIcon)`
@@ -249,7 +253,9 @@ function FinishButton(props) {
     <StyledFinishButton
       to="/result"
       state={{ answers: props.answers }}
-      className={props["aria-disabled"] ? "" : "highlightable"}
+      className={
+        props["aria-disabled"] ? "" : "highlightable darkens-on-active-state"
+      }
       {...props}
     >
       Finish
