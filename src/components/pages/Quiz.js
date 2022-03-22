@@ -393,6 +393,68 @@ export function Quiz() {
     return () => document.removeEventListener("keyup", handleKeyUp);
   });
 
+  const swipeNavigation = {
+    targetDist: 50,
+    multiTouchHappened: false,
+    initXPos: null,
+    curXpos: null,
+
+    handleEvent(e) {
+      this[e.type](e);
+    },
+
+    touchstart(e) {
+      if (e.touches.length > 1) {
+        this.multiTouchHappened = true;
+        return;
+      }
+
+      this.initXPos = e.touches[0].clientX;
+    },
+
+    touchmove(e) {
+      this.curXpos = e.touches[0].clientX;
+    },
+
+    touchend(e) {
+      if (this.multiTouchHappened) {
+        if (!e.touches.length) {
+          this.reset();
+        }
+        return;
+      }
+
+      if (this.curXpos !== null) {
+        if (this.curXpos - this.initXPos <= -this.targetDist) {
+          next();
+        } else if (this.curXpos - this.initXPos >= this.targetDist) {
+          prev();
+        }
+      }
+
+      this.reset();
+    },
+
+    touchcancel(e) {
+      if (!e.touches.length) this.reset();
+    },
+
+    reset(e) {
+      this.multiTouchHappened = false;
+      this.initXPos = null;
+      this.curXpos = null;
+    },
+  };
+
+  useEffect(() => {
+    const events = ["touchstart", "touchmove", "touchend", "touchcancel"];
+
+    events.forEach((e) => document.addEventListener(e, swipeNavigation));
+
+    return () =>
+      events.forEach((e) => document.removeEventListener(e, swipeNavigation));
+  });
+
   return (
     <Main>
       <MainContent
