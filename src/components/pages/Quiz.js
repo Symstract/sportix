@@ -112,6 +112,7 @@ const StyledMainContent = styled.div`
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding-bottom: calc(${bottomNavHeightTablet} + 30px);
+    margin-top: 3.5rem;
   }
 `;
 
