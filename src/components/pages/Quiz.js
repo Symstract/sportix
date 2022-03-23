@@ -22,6 +22,10 @@ const StyledQuestionContainer = styled.div`
   width: 100%;
   margin-bottom: 2.5rem;
   font-size: 1.25rem;
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    margin-bottom: 2.8rem;
+  }
 `;
 
 function QuestionContainer(props) {
