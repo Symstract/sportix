@@ -6,7 +6,8 @@ import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 import { questions } from "../../questions";
 
-const bottomNavHeight = "66px";
+const bottomNavHeightPhone = "66px";
+const bottomNavHeightTablet = "72px";
 const contentMaxWidth = "800px";
 
 // Main content
@@ -33,9 +34,14 @@ const StyledQuestionNumber = styled.a`
   justify-content: center;
   width: 3.12rem;
   height: 3.12rem;
-  padding-left: 0.25rem;
+  padding-left: 0.7%;
   background: #4d4d4d;
   border-radius: 99px;
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: 3.6rem;
+    height: 3.6rem;
+  }
 `;
 
 function QuestionNumber(props) {
@@ -44,6 +50,10 @@ function QuestionNumber(props) {
 
 const StyledQuestion = styled.p`
   text-align: center;
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 1.5rem;
+  }
 `;
 
 function Question(props) {
@@ -98,7 +108,11 @@ const StyledMainContent = styled.div`
   width: 100%;
   max-width: ${contentMaxWidth};
   margin-top: 2.5rem;
-  padding-bottom: calc(${bottomNavHeight} + 30px);
+  padding-bottom: calc(${bottomNavHeightPhone} + 30px);
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding-bottom: calc(${bottomNavHeightTablet} + 30px);
+  }
 `;
 
 function MainContent({ questionNumber, answers, setAnswers }) {
@@ -277,6 +291,10 @@ const StyledNavControls = styled.div`
     display: block;
     width: 6rem;
     text-align: center;
+
+    @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      width: 10rem;
+    }
   }
 `;
 
@@ -330,8 +348,12 @@ const StyledBottomNav = styled.div`
   position: fixed;
   bottom: 0;
   width: 100vw;
-  height: ${bottomNavHeight};
+  height: ${bottomNavHeightPhone};
   background: #282525;
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    height: ${bottomNavHeightTablet};
+  }
 `;
 
 function BottomNav({
