@@ -4,6 +4,7 @@ import styled from "styled-components/macro";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
+import { QuestionNumber } from "../QuestionNumber";
 import { questions } from "../../questions";
 
 const bottomNavHeightPhone = "66px";
@@ -32,26 +33,6 @@ function QuestionContainer(props) {
   return <StyledQuestionContainer>{props.children}</StyledQuestionContainer>;
 }
 
-const StyledQuestionNumber = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 3.12rem;
-  height: 3.12rem;
-  padding-left: 0.7%;
-  background: #4d4d4d;
-  border-radius: 99px;
-
-  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 3.6rem;
-    height: 3.6rem;
-  }
-`;
-
-function QuestionNumber(props) {
-  return <StyledQuestionNumber>{props.children}</StyledQuestionNumber>;
-}
-
 const StyledQuestion = styled.p`
   text-align: center;
 
@@ -59,7 +40,6 @@ const StyledQuestion = styled.p`
     font-size: 1.5rem;
   }
 `;
-
 function Question(props) {
   return <StyledQuestion>{props.children}</StyledQuestion>;
 }
