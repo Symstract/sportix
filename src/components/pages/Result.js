@@ -185,7 +185,7 @@ const WrongAnswers = styled.ul`
   padding: 0;
 `;
 
-const StyledWrongAswersSection = styled.div`
+const StyledWrongAnswersSection = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -198,15 +198,15 @@ const StyledWrongAswersSection = styled.div`
   }
 `;
 
-function WrongAswersSection() {
+function WrongAnswersSection() {
   return (
-    <StyledWrongAswersSection>
+    <StyledWrongAnswersSection>
       <h2>Wrong Answers</h2>
       <WrongAnswers>
         <WrongAnswer />
         <WrongAnswer />
       </WrongAnswers>
-    </StyledWrongAswersSection>
+    </StyledWrongAnswersSection>
   );
 }
 
@@ -240,7 +240,7 @@ export function Result() {
       <MainContent>
         <ScoreSection />
         <Separator />
-        <WrongAswersSection />
+        <WrongAnswersSection />
       </MainContent>
     </Main>
   );
