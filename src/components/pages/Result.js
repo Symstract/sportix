@@ -194,13 +194,13 @@ function WrongAnswer({ questionIndex, answers }) {
         <h3>{question.question}</h3>
         <ul>
           {answers[questionIndex].map((optionIndex) => (
-            <WrongOption key={optionIndex}>
+            <WrongOption key={optionIndex} aria-label="Wrong answer">
               <Xmark />
               {question.options[optionIndex]}
             </WrongOption>
           ))}
           {question.answer.map((optionIndex) => (
-            <RightOption key={optionIndex}>
+            <RightOption key={optionIndex} aria-label="Right answer">
               {question.options[optionIndex]}
             </RightOption>
           ))}
