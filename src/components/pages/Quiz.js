@@ -127,6 +127,9 @@ function MainContent({ questionNumber, answers, setAnswers }) {
       answersCopy[questionIndex] = [index];
     } else if (expectedAnsCount !== curAns.length) {
       answersCopy[questionIndex].push(index);
+      // Sort the array so the answers will be shown in the correct order in the
+      // result page.
+      answersCopy[questionIndex].sort((a, b) => a - b);
     }
 
     setAnswers(answersCopy);
