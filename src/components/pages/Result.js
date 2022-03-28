@@ -160,6 +160,13 @@ const RightOption = styled.li`
   font-size: 1.12rem;
 `;
 
+const WrongAnswerList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 0;
+`;
+
 const StyledwrongAnswer = styled.li`
   display: flex;
   gap: 1rem;
@@ -203,13 +210,6 @@ function WrongAnswer({ questionIndex, answers }) {
   );
 }
 
-const WrongAnswers = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  padding: 0;
-`;
-
 const StyledWrongAnswersSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -227,11 +227,11 @@ function WrongAnswersSection({ answers, wrongAnswerIndices }) {
   return (
     <StyledWrongAnswersSection>
       <h2>Wrong Answers</h2>
-      <WrongAnswers>
+      <WrongAnswerList>
         {wrongAnswerIndices.map((i) => {
           return <WrongAnswer key={i} questionIndex={i} answers={answers} />;
         })}
-      </WrongAnswers>
+      </WrongAnswerList>
     </StyledWrongAnswersSection>
   );
 }
