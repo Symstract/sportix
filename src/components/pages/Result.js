@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components/macro";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import _ from "lodash";
 
 import RunningGirl from "../../images/running-girl-finish-line.svg";
 import Medal from "../../images/medal.svg";
 import { QuestionNumber } from "../QuestionNumber";
+import { questions } from "../../questions";
 
 const contentMaxWidth = "800px";
 const mainTitleColor = "#D9D9D9";
@@ -39,14 +42,22 @@ const StyledScore = styled.div`
   }
 `;
 
-function Score() {
+function Score({ correctAnswerCount }) {
   return (
     <StyledScore>
       <h1>Your Score:</h1>
-      <span>8/10</span>
+      <span>
+        {correctAnswerCount}/{questions.length}
+      </span>
     </StyledScore>
   );
 }
+
+const medalColors = {
+  bronze: "",
+  silver: "",
+  gold: "",
+};
 
 const StyledFeedback = styled.div`
   display: flex;
@@ -94,10 +105,10 @@ const StyledScoreSection = styled.section`
   }
 `;
 
-function ScoreSection() {
+function ScoreSection({ correctAnswerCount }) {
   return (
     <StyledScoreSection>
-      <Score />
+      <Score correctAnswerCount={correctAnswerCount} />
       <img src={RunningGirl} alt="" />
       <Feedback />
     </StyledScoreSection>
@@ -134,7 +145,7 @@ const Xmark = styled(FontAwesomeIcon).attrs({
   }
 `;
 
-const WrongOption = styled.span`
+const WrongOption = styled.li`
   display: block;
   color: ${wrongOptionColor};
   font-size: 1.12rem;
@@ -142,7 +153,7 @@ const WrongOption = styled.span`
   margin-bottom: 0.1rem;
 `;
 
-const RightOption = styled.span`
+const RightOption = styled.li`
   display: block;
   margin-left: calc(${wrongOptionMarkSize} + ${wrongOptionMarkGap});
   color: ${({ theme }) => theme.colors.primary};
@@ -160,19 +171,33 @@ const StyledwrongAnswer = styled.li`
     font-weight: 300;
     margin-bottom: 0.6rem;
   }
+
+  ul {
+    padding: 0;
+  }
 `;
 
-function WrongAnswer() {
+function WrongAnswer({ questionIndex, answers }) {
+  const question = questions[questionIndex];
+
   return (
     <StyledwrongAnswer>
-      <QuestionNumber>1.</QuestionNumber>
+      <QuestionNumber>{questionIndex + 1}.</QuestionNumber>
       <div>
-        <h3>Which country won the Men's Football World Cup in 2006?</h3>
-        <WrongOption>
-          <Xmark />
-          France
-        </WrongOption>
-        <RightOption>Italy</RightOption>
+        <h3>{question.question}</h3>
+        <ul>
+          {answers[questionIndex].map((optionIndex) => (
+            <WrongOption key={optionIndex}>
+              <Xmark />
+              {question.options[optionIndex]}
+            </WrongOption>
+          ))}
+          {question.answer.map((optionIndex) => (
+            <RightOption key={optionIndex}>
+              {question.options[optionIndex]}
+            </RightOption>
+          ))}
+        </ul>
       </div>
     </StyledwrongAnswer>
   );
@@ -198,13 +223,14 @@ const StyledWrongAnswersSection = styled.div`
   }
 `;
 
-function WrongAnswersSection() {
+function WrongAnswersSection({ answers, wrongAnswerIndices }) {
   return (
     <StyledWrongAnswersSection>
       <h2>Wrong Answers</h2>
       <WrongAnswers>
-        <WrongAnswer />
-        <WrongAnswer />
+        {wrongAnswerIndices.map((i) => {
+          return <WrongAnswer key={i} questionIndex={i} answers={answers} />;
+        })}
       </WrongAnswers>
     </StyledWrongAnswersSection>
   );
@@ -235,12 +261,34 @@ const Main = styled.main`
 `;
 
 export function Result() {
+  const location = useLocation();
+
+  if (!location.state) return <Navigate to="/"></Navigate>;
+
+  // const location = {
+  //   state: {
+  //     // answers: [[3], [1], [3], [1, 2], [2], [2], [1], [2], [3, 1], [1, 2]],
+  //     answers: [[3], [1], [3], [1, 3], [2], [0], [3], [1], [1, 2], [0, 3]],
+  //   },
+  // };
+
+  const answers = location.state.answers;
+  const wrongAnswerIndices = _.range(0, questions.length).filter(
+    (i) => !_.isEqual(answers[i], questions[i].answer)
+  );
+  const correctAnswerCount = answers.length - wrongAnswerIndices.length;
+
   return (
     <Main>
       <MainContent>
-        <ScoreSection />
+        <ScoreSection correctAnswerCount={correctAnswerCount} />
         <Separator />
-        <WrongAnswersSection />
+        {wrongAnswerIndices.length !== 0 && (
+          <WrongAnswersSection
+            answers={location.state.answers}
+            wrongAnswerIndices={wrongAnswerIndices}
+          />
+        )}
       </MainContent>
     </Main>
   );
