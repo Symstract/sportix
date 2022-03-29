@@ -282,12 +282,14 @@ export function Result() {
     <Main>
       <MainContent>
         <ScoreSection correctAnswerCount={correctAnswerCount} />
-        <Separator />
         {wrongAnswerIndices.length !== 0 && (
-          <WrongAnswersSection
-            answers={location.state.answers}
-            wrongAnswerIndices={wrongAnswerIndices}
-          />
+          <>
+            <Separator />
+            <WrongAnswersSection
+              answers={location.state.answers}
+              wrongAnswerIndices={wrongAnswerIndices}
+            />
+          </>
         )}
       </MainContent>
     </Main>
