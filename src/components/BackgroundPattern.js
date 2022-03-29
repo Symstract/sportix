@@ -15,6 +15,10 @@ const StyledBackgroundPattern = styled.div`
   background-image: url(${pattern});
   background-size: 220px;
   background-position: 10px -30px;
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    opacity: 0.022;
+  }
 `;
 
 export function BackgroundPattern() {
