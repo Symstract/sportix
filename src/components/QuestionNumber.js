@@ -3,6 +3,8 @@ import styled from "styled-components/macro";
 
 const phoneLarge = "3.12rem";
 const phoneSmall = "2.5rem";
+const tabletLarge = "3.6rem";
+const tabletSmall = "2.8rem";
 
 const StyledQuestionNumber = styled.a`
   display: flex;
@@ -17,11 +19,13 @@ const StyledQuestionNumber = styled.a`
   border-radius: 99px;
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 3.6rem;
-    height: 3.6rem;
+    width: ${({ size }) => (size === "small" ? tabletSmall : tabletLarge)};
+    height: ${({ size }) => (size === "small" ? tabletSmall : tabletLarge)};
   }
 `;
 
 export function QuestionNumber(props) {
-  return <StyledQuestionNumber>{props.children}</StyledQuestionNumber>;
+  return (
+    <StyledQuestionNumber {...props}>{props.children}</StyledQuestionNumber>
+  );
 }

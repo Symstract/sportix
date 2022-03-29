@@ -26,6 +26,10 @@ const StyledScore = styled.div`
   h1 {
     color: ${mainTitleColor};
     font-size: 1.9rem;
+
+    @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      font-size: 2.5rem;
+    }
   }
 
   & > span {
@@ -40,6 +44,10 @@ const StyledScore = styled.div`
       black 85%,
       transparent
     );
+
+    @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      font-size: 5.5rem;
+    }
   }
 `;
 
@@ -61,10 +69,20 @@ const StyledFeedback = styled.div`
   justify-content: ${({ showMedal }) => (showMedal ? "left" : "center")};
   text-align: ${({ showMedal }) => (showMedal ? "left" : "center")};
 
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: 1.25rem;
+    align-items: center;
+  }
+
   & svg {
     width: 50px;
     height: 50px;
     flex-shrink: 0;
+
+    @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      width: 65px;
+      height: 65px;
+    }
 
     #color {
       fill: ${({ levelColor }) => levelColor};
@@ -78,6 +96,10 @@ const StyledFeedback = styled.div`
   & p {
     color: #c9c9c9;
     font-size: 1.25rem;
+
+    @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      font-size: 1.35rem;
+    }
   }
 
   & span {
@@ -105,8 +127,16 @@ const StyledScoreSection = styled.section`
   gap: 1.9rem;
   width: 100%;
 
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: 2.5rem;
+  }
+
   & > img {
     width: 180px;
+
+    @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      width: 300px;
+    }
   }
 `;
 
@@ -190,7 +220,6 @@ const Xmark = styled(FontAwesomeIcon).attrs({
 const WrongOption = styled.li`
   display: block;
   color: ${wrongOptionColor};
-  font-size: 1.12rem;
   font-weight: 300;
   margin-bottom: 0.1rem;
 `;
@@ -199,7 +228,6 @@ const RightOption = styled.li`
   display: block;
   margin-left: calc(${wrongOptionMarkSize} + ${wrongOptionMarkGap});
   color: ${({ theme }) => theme.colors.primary};
-  font-size: 1.12rem;
 `;
 
 const WrongAnswerList = styled.ul`
@@ -207,6 +235,10 @@ const WrongAnswerList = styled.ul`
   flex-direction: column;
   gap: 1.25rem;
   padding: 0;
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: 1.9rem;
+  }
 `;
 
 const StyledwrongAnswer = styled.li`
@@ -214,9 +246,16 @@ const StyledwrongAnswer = styled.li`
   gap: 1rem;
   width: 100%;
 
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: 1.25rem;
+  }
+
+  & * {
+    font-size: 1.12rem;
+  }
+
   h3 {
     color: #e0e0e0;
-    font-size: 1.12rem;
     font-weight: 300;
     margin-bottom: 0.6rem;
   }
@@ -231,7 +270,7 @@ function WrongAnswer({ questionIndex, answers }) {
 
   return (
     <StyledwrongAnswer>
-      <QuestionNumber>{questionIndex + 1}.</QuestionNumber>
+      <QuestionNumber size="small">{questionIndex + 1}.</QuestionNumber>
       <div>
         <h3>{question.question}</h3>
         <ul>
@@ -262,6 +301,12 @@ const StyledWrongAnswersSection = styled.div`
     margin-right: auto;
     margin-bottom: 1.9rem;
     color: ${mainTitleColor};
+    font-size: 1.5rem;
+
+    @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      margin-bottom: 2.5rem;
+      font-size: 2rem;
+    }
   }
 `;
 
@@ -292,6 +337,7 @@ const MainContent = styled.div`
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     margin-top: 3.5rem;
+    gap: 3.5rem;
   }
 `;
 
