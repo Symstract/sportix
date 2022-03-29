@@ -6,7 +6,7 @@ const phoneSmall = "2.5rem";
 const tabletLarge = "3.6rem";
 const tabletSmall = "2.8rem";
 
-const StyledQuestionNumber = styled.a`
+const StyledQuestionNumber = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
