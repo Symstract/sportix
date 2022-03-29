@@ -333,7 +333,7 @@ const MainContent = styled.div`
   width: 100%;
   max-width: ${contentMaxWidth};
   margin-top: 1.5rem;
-  padding-bottom: 30px;
+  padding-bottom: 56px;
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     margin-top: 3.5rem;
