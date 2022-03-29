@@ -18,7 +18,7 @@ export const questions = [
   },
   {
     question:
-      "Which two Formula One drivers share the record of most World Drivers' Championships (7)?",
+      "Which two Formula One drivers share the record for most World Drivers' Championships (7)?",
     options: [
       "Sebastian Vettel",
       "Michael Schumacher",
@@ -40,13 +40,13 @@ export const questions = [
     answer: [0],
   },
   {
-    question: "Who of the following atheletes is not a golf player?",
+    question: "Who of the following athletes is not a golf player?",
     options: ["Tiger Woods", "Rory McIlroy", "Annika Sörenstam", "Naomi Osaka"],
     answer: [3],
   },
   {
     question:
-      "What is the 100 metres world record time set by sprinter Usain Bolt?",
+      "What is the 100 meters world record time set by sprinter Usain Bolt?",
     options: ["9.65 s", "9.58 s", "9.52 s", "9.71 s"],
     answer: [1],
   },
@@ -58,7 +58,7 @@ export const questions = [
   },
   {
     question:
-      "Which of the following countries has won both Men's and Women's Basketball World Cup?",
+      "Which two of the following countries have won both Men's and Women's Basketball World Cup?",
     options: ["Brazil", "Spain", "Australia", "USA"],
     answer: [0, 3],
   },
