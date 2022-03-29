@@ -6,7 +6,10 @@ import heroImage from "../../images/soccer-with-question-marks.svg";
 
 const desktopWidth = "1200px";
 
-const StyledHeroImage = styled.img`
+const HeroImage = styled.img.attrs({
+  src: heroImage,
+  alt: "",
+})`
   flex-shrink: 0;
   height: 295px;
 
@@ -19,10 +22,6 @@ const StyledHeroImage = styled.img`
     height: 600px;
   }
 `;
-
-function HeroImage() {
-  return <StyledHeroImage src={heroImage} alt=""></StyledHeroImage>;
-}
 
 const StyledQuestion = styled.p`
   font-family: ${({ theme }) => theme.fonts.secondary};
@@ -130,21 +129,17 @@ function MainContent() {
   );
 }
 
-const StyledMain = styled.main`
+const Main = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 `;
 
-function Main() {
-  return (
-    <StyledMain>
-      <MainContent />
-    </StyledMain>
-  );
-}
-
 export function Home() {
-  return <Main />;
+  return (
+    <Main>
+      <MainContent />
+    </Main>
+  );
 }
