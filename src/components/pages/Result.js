@@ -6,7 +6,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
 
 import RunningGirl from "../../images/running-girl-finish-line.svg";
-import Medal from "../../images/medal.svg";
+import { ReactComponent as Medal } from "../../images/medal.svg";
 import { QuestionNumber } from "../QuestionNumber";
 import { questions } from "../../questions";
 
@@ -29,6 +29,7 @@ const StyledScore = styled.div`
   }
 
   & > span {
+    color: ${(props) => props.levelColor};
     font-size: 5rem;
     width: 100%;
     text-align: center;
@@ -42,9 +43,9 @@ const StyledScore = styled.div`
   }
 `;
 
-function Score({ correctAnswerCount }) {
+function Score({ correctAnswerCount, levelColor }) {
   return (
-    <StyledScore>
+    <StyledScore levelColor={levelColor}>
       <h1>Your Score:</h1>
       <span>
         {correctAnswerCount}/{questions.length}
@@ -53,19 +54,21 @@ function Score({ correctAnswerCount }) {
   );
 }
 
-const medalColors = {
-  bronze: "",
-  silver: "",
-  gold: "",
-};
-
 const StyledFeedback = styled.div`
   display: flex;
   gap: 1rem;
   width: 100%;
+  justify-content: ${({ showMedal }) => (showMedal ? "left" : "center")};
+  text-align: ${({ showMedal }) => (showMedal ? "left" : "center")};
 
-  & img {
+  & svg {
     width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+
+    #color {
+      fill: ${({ levelColor }) => levelColor};
+    }
   }
 
   & * {
@@ -78,16 +81,18 @@ const StyledFeedback = styled.div`
   }
 
   & span {
-    color: yellow;
+    color: ${({ levelColor }) => levelColor};
   }
 `;
 
-function Feedback() {
+function Feedback({ levelColor, medalText, feedback }) {
+  const showMedal = medalText !== null;
+
   return (
-    <StyledFeedback>
-      <img src={Medal} alt="" />
+    <StyledFeedback levelColor={levelColor} showMedal={showMedal}>
+      {showMedal && <Medal />}
       <p>
-        <span>Bronze!</span> You're in shape for a medal! Good performance.
+        {medalText && <span>{medalText}</span>} {feedback}
       </p>
     </StyledFeedback>
   );
@@ -106,11 +111,48 @@ const StyledScoreSection = styled.section`
 `;
 
 function ScoreSection({ correctAnswerCount }) {
+  const levels = {
+    gold: 1,
+    silver: 0.8,
+    bronze: 0.6,
+  };
+  const levelColors = {
+    gold: "#FBB03B",
+    silver: "#DADADA",
+    bronze: "#D68245",
+    other: "#9ACCE9",
+  };
+
+  const successRatio = correctAnswerCount / questions.length;
+  let color;
+  let medalText = null;
+  let feedback;
+
+  if (successRatio === levels.gold) {
+    color = levelColors.gold;
+    medalText = "Gold!";
+    feedback =
+      "You did it! What an amazing performance! You are a sports guru!";
+  } else if (successRatio >= levels.silver) {
+    color = levelColors.silver;
+    medalText = "Silver!";
+    feedback =
+      "You know your sports! Gold was not far off, just a bit more practice.";
+  } else if (successRatio >= levels.bronze) {
+    color = levelColors.bronze;
+    medalText = "Bronze!";
+    feedback = "You're in shape for a medal! Good performance.";
+  } else {
+    color = levelColors.other;
+    feedback =
+      "Good try but you didn't quite reach the podium. Keep practicing!";
+  }
+
   return (
     <StyledScoreSection>
-      <Score correctAnswerCount={correctAnswerCount} />
+      <Score correctAnswerCount={correctAnswerCount} levelColor={color} />
       <img src={RunningGirl} alt="" />
-      <Feedback />
+      <Feedback levelColor={color} medalText={medalText} feedback={feedback} />
     </StyledScoreSection>
   );
 }
@@ -264,13 +306,6 @@ export function Result() {
   const location = useLocation();
 
   if (!location.state) return <Navigate to="/"></Navigate>;
-
-  // const location = {
-  //   state: {
-  //     // answers: [[3], [1], [3], [1, 2], [2], [2], [1], [2], [3, 1], [1, 2]],
-  //     answers: [[3], [1], [3], [1, 3], [2], [0], [3], [1], [1, 2], [0, 3]],
-  //   },
-  // };
 
   const answers = location.state.answers;
   const wrongAnswerIndices = _.range(0, questions.length).filter(
