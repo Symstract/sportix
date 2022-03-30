@@ -350,6 +350,8 @@ export function Quiz() {
     answers[questionNumber - 1].length ===
     questions[questionNumber - 1].answer.length;
 
+  useEffect(() => (document.title = "Sportix | Quiz"));
+
   const next = () => {
     if (canMoveToNext) {
       setQuestionNumber(Math.min(questionNumber + 1, questions.length));

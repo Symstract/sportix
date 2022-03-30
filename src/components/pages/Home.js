@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -137,6 +137,8 @@ const Main = styled.main`
 `;
 
 export function Home() {
+  useEffect(() => (document.title = "Sportix - A Fun Sports Quiz"));
+
   return (
     <Main>
       <MainContent />

@@ -349,6 +349,8 @@ const Main = styled.main`
 `;
 
 export function Result() {
+  useEffect(() => (document.title = "Sportix | Result"));
+
   const location = useLocation();
 
   if (!location.state) return <Navigate to="/"></Navigate>;
