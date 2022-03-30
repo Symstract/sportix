@@ -132,10 +132,10 @@ const StyledScoreSection = styled.section`
   }
 
   & > img {
-    width: 180px;
+    height: 165px;
 
     @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
-      width: 300px;
+      height: 275px;
     }
   }
 `;
