@@ -14,7 +14,7 @@ const contentMaxWidth = "800px";
 // Main content
 // =============================================================================
 
-const StyledQuestionContainer = styled.div`
+const QuestionContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -29,22 +29,15 @@ const StyledQuestionContainer = styled.div`
   }
 `;
 
-function QuestionContainer(props) {
-  return <StyledQuestionContainer>{props.children}</StyledQuestionContainer>;
-}
-
-const StyledQuestion = styled.p`
+const Question = styled.p`
   text-align: center;
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     font-size: 1.5rem;
   }
 `;
-function Question(props) {
-  return <StyledQuestion>{props.children}</StyledQuestion>;
-}
 
-const StyledOptionList = styled.ul`
+const OptionList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
@@ -53,11 +46,7 @@ const StyledOptionList = styled.ul`
   list-style: none;
 `;
 
-function OptionList(props) {
-  return <StyledOptionList>{props.children}</StyledOptionList>;
-}
-
-const StyledOption = styled.button`
+const Option = styled.button`
   width: 100%;
   padding: 1.25rem;
   border-radius: 0.5rem;
@@ -81,10 +70,6 @@ const StyledOption = styled.button`
     cursor: default;
   }
 `;
-
-function Option(props) {
-  return <StyledOption {...props}>{props.children}</StyledOption>;
-}
 
 const StyledMainContent = styled.div`
   display: flex;
@@ -163,7 +148,7 @@ function MainContent({ questionNumber, answers, setAnswers }) {
 // Bottom nav
 // =============================================================================
 
-const StyledProgressBar = styled.div`
+const ProgressBar = styled.div`
   flex-shrink: 0;
   flex-grow: 0;
   width: 100%;
@@ -177,11 +162,9 @@ const StyledProgressBar = styled.div`
   );
 `;
 
-function ProgressBar(props) {
-  return <StyledProgressBar {...props}></StyledProgressBar>;
-}
-
-const StyledNavButton = styled.button`
+const NavButton = styled.button.attrs({
+  className: "darkens-on-active-state",
+})`
   visibility: ${({ hide }) => (hide ? "hidden" : "initial")};
   width: 3.75rem;
   height: 100%;
@@ -198,39 +181,21 @@ const StyledNavButton = styled.button`
   }
 `;
 
-function NavButton(props) {
-  return (
-    <StyledNavButton className="darkens-on-active-state" {...props}>
-      {props.children}
-    </StyledNavButton>
-  );
-}
-
-const StyledNavIcon = styled(FontAwesomeIcon)`
-  ${StyledNavButton}[aria-disabled=false]:hover &,
-  ${StyledNavButton}[aria-disabled=false]:focus & {
+const NavIcon = styled(FontAwesomeIcon).attrs(({ direction }) => ({
+  icon: direction === "next" ? faAngleRight : faAngleLeft,
+}))`
+  ${NavButton}[aria-disabled=false]:hover &,
+  ${NavButton}[aria-disabled=false]:focus & {
     transform: scale(120%);
   }
 `;
 
-function NavIcon(props) {
-  return (
-    <StyledNavIcon
-      icon={props.direction === "next" ? faAngleRight : faAngleLeft}
-    />
-  );
-}
-
-const StyledQuestionNav = styled.div`
+const QuestionNav = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   height: 100%;
 `;
-
-function QuestionNav(props) {
-  return <StyledQuestionNav>{props.children}</StyledQuestionNav>;
-}
 
 const StyledFinishButton = styled(Link)`
   position: absolute;
@@ -368,16 +333,12 @@ function BottomNav({
 // Main and page
 // =============================================================================
 
-const StyledMain = styled.main`
+const Main = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 `;
-
-function Main(props) {
-  return <StyledMain>{props.children}</StyledMain>;
-}
 
 export function Quiz() {
   const [questionNumber, setQuestionNumber] = useState(1);
@@ -455,7 +416,7 @@ export function Quiz() {
       if (!e.touches.length) this.reset();
     },
 
-    reset(e) {
+    reset() {
       this.multiTouchHappened = false;
       this.initXPos = null;
       this.curXpos = null;
