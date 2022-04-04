@@ -52,7 +52,7 @@ export const questions = [
   },
   {
     question:
-      "On which distances has sprinter Allyson Felix won the World Championship?",
+      "On which two distances has sprinter Allyson Felix won the World Championship?",
     options: ["100 m", "200 m", "400 m", "800 m"],
     answer: [1, 2],
   },
